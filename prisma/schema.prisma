@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+enum CallSource {
+  GBP
+  GOOGLE_ADS
+  MARKETPLACE
+  WEBSITE_ORGANIC
+  REFERRAL
+  OTHER
+}
+
+enum CallOutcome {
+  UNKNOWN
+  RESERVED
+  MOVED_IN
+  LOST
+}
+
+enum CallReason {
+  PRICE_OBJECTION
+  AVAILABILITY_MISMATCH
+  COMPETITOR
+  COULD_NOT_REACH
+  AFTER_HOURS_VOICEMAIL
+  NEEDS_FOLLOW_UP
+  OTHER
+}
+
+model Operator {
+  id          String     @id @default(cuid())
+  name        String
+  facilities  Facility[]
+  createdAt   DateTime   @default(now())
+}
+
+model Facility {
+  id                    String        @id @default(cuid())
+  operatorId            String
+  name                  String
+  city                  String
+  state                 String
+  timezone              String
+  businessHours         String
+  operator              Operator      @relation(fields: [operatorId], references: [id])
+  calls                 Call[]
+  followUps             FollowUp[]
+  reservations          Reservation[]
+}
+
+model Call {
+  id                    String        @id @default(cuid())
+  facilityId            String
+  caller                String
+  callAt                DateTime
+  source                CallSource
+  isSales               Boolean
+  answered              Boolean
+  speedToAnswerSeconds  Int?
+  durationSeconds       Int
+  agent                 String?
+  aiScore               Int
+  outcome               CallOutcome
+  reason                CallReason
+  transcript            String
+  competitorMentioned   Boolean
+  trackingNumber        Boolean
+  googleAdsCampaign     String?
+  googleAdsAdGroup      String?
+  facility              Facility      @relation(fields: [facilityId], references: [id])
+  followUps             FollowUp[]
+  reservation           Reservation?
+}
+
+model FollowUp {
+  id                    String    @id @default(cuid())
+  facilityId            String
+  callId                String
+  attemptAt             DateTime
+  channel               String
+  owner                 String
+  note                  String
+  facility              Facility  @relation(fields: [facilityId], references: [id])
+  call                  Call      @relation(fields: [callId], references: [id])
+}
+
+model Reservation {
+  id                    String    @id @default(cuid())
+  facilityId            String
+  callId                String?   @unique
+  source                String
+  reservationName       String
+  reservedAt            DateTime
+  moveInConfirmed       Boolean
+  moveInName            String?
+  moveInAt              DateTime?
+  facility              Facility  @relation(fields: [facilityId], references: [id])
+  call                  Call?     @relation(fields: [callId], references: [id])
+}
