@@ -1,6 +1,8 @@
 import { db } from "@/lib/db";
 import { differenceInMinutes } from "date-fns";
 
+export const dynamic = "force-dynamic";
+
 export default async function FollowUpPage() {
   const calls = await db.call.findMany({ where: { answered: false, isSales: true }, orderBy: { callAt: "desc" }, take: 40, include: { facility: true, followUps: true } });
   const today = calls.filter(c => differenceInMinutes(new Date(), c.callAt) < 1440);

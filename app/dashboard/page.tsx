@@ -3,6 +3,8 @@ import { computeKPIs, pct } from "@/lib/metrics";
 import { subDays } from "date-fns";
 import { DashboardCharts } from "@/components/dashboard-charts";
 
+export const dynamic = "force-dynamic";
+
 export default async function Dashboard() {
   const since = subDays(new Date(), 7);
   const [calls, reservations, facilities] = await Promise.all([

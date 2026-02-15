@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export default async function CallsPage() {
   const calls = await db.call.findMany({ orderBy: { callAt: "desc" }, take: 100, include: { facility: true } });
   return (

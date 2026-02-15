@@ -1,5 +1,7 @@
 import { db } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export default async function CallDetail({ params }: { params: { id: string } }) {
   const call = await db.call.findUnique({ where: { id: params.id }, include: { followUps: true, reservation: true, facility: true } });
   if (!call) return null;

@@ -1,5 +1,7 @@
 import { db } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export default async function FacilityDetail({ params, searchParams }: { params: { id: string }; searchParams: { tab?: string } }) {
   const tab = searchParams.tab || "overview";
   const facility = await db.facility.findUnique({ where: { id: params.id }, include: { calls: true, followUps: true, reservations: true } });

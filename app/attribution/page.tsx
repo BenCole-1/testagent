@@ -1,5 +1,7 @@
 import { db } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export default async function AttributionPage() {
   const calls = await db.call.findMany({ include: { reservation: true } });
   const bySource = Object.values(calls.reduce((acc, c) => {

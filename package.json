@@ -9,7 +9,8 @@
     "lint": "next lint",
     "seed": "tsx prisma/seed.ts",
     "db:push": "prisma db push",
-    "demo:reset": "tsx prisma/seed.ts --reset"
+    "demo:reset": "tsx prisma/seed.ts --reset",
+    "vercel-build": "prisma db push && next build"
   },
   "dependencies": {
     "@prisma/client": "^6.3.1",

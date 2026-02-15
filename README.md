@@ -19,6 +19,19 @@ Open http://localhost:3000.
 npm run db:push && npm run seed && npm run dev
 ```
 
+
+## Vercel + Postgres deployment
+
+This project is configured for Prisma with Postgres in hosted environments.
+
+1. Provision Postgres in Vercel Storage or Supabase.
+2. Add these environment variables in Vercel:
+   - `POSTGRES_PRISMA_URL`
+   - `POSTGRES_URL_NON_POOLING`
+3. Redeploy.
+
+If you rotate credentials, update Vercel env vars and redeploy again.
+
 ## Reset demo data
 
 - In-app button: **Demo mode: Reset data** (top bar)

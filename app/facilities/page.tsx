@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export default async function FacilitiesPage() {
   const facilities = await db.facility.findMany({ include: { calls: true, reservations: true } });
   return (
